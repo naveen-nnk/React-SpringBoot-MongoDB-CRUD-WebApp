@@ -1,20 +1,20 @@
 import React, { Component } from 'react'
-import UserService from '../services/UserService';
+import StockService from '../services/StockService';
 
-class CreateUserComponent extends Component {
+class CreateStockComponent extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
             // step 2
             id: this.props.match.params.id,
-            firstName: '',
-            lastName: '',
+            stockName: '',
+            quantity: '',
             emailId: ''
         }
-        this.changeFirstNameHandler = this.changeFirstNameHandler.bind(this);
-        this.changeLastNameHandler = this.changeLastNameHandler.bind(this);
-        this.saveOrUpdateUser = this.saveOrUpdateUser.bind(this);
+        this.changeStockNameHandler = this.changeStockNameHandler.bind(this);
+        this.changeQuantityHandler = this.changeQuantityHandler.bind(this);
+        this.saveOrUpdateStock = this.saveOrUpdateStock.bind(this);
     }
 
     // step 3
@@ -24,38 +24,38 @@ class CreateUserComponent extends Component {
         if(this.state.id === '_add'){
             return
         }else{
-            UserService.getUserById(this.state.id).then( (res) =>{
-                let user = res.data;
-                this.setState({firstName: user.firstName,
-                    lastName: user.lastName,
-                    emailId : user.emailId
+            StockService.getStockById(this.state.id).then( (res) =>{
+                let stock = res.data;
+                this.setState({stockName: stock.stockName,
+                    quantity: stock.quantity,
+                    emailId : stock.emailId
                 });
             });
         }        
     }
-    saveOrUpdateUser = (e) => {
+    saveOrUpdateStock = (e) => {
         e.preventDefault();
-        let user = {firstName: this.state.firstName, lastName: this.state.lastName, emailId: this.state.emailId};
-        console.log('user => ' + JSON.stringify(user));
+        let stock = {stockName: this.state.stockName, quantity: this.state.quantity, emailId: this.state.emailId};
+        console.log('stock => ' + JSON.stringify(stock));
 
         // step 5
         if(this.state.id === '_add'){
-            UserService.createUser(user).then(res =>{
-                this.props.history.push('/users');
+            StockService.createStock(stock).then(res =>{
+                this.props.history.push('/stocks');
             });
         }else{
-            UserService.updateUser(user, this.state.id).then( res => {
-                this.props.history.push('/users');
+            StockService.updateStock(stock, this.state.id).then( res => {
+                this.props.history.push('/stocks');
             });
         }
     }
     
-    changeFirstNameHandler= (event) => {
-        this.setState({firstName: event.target.value});
+    changeStockNameHandler= (event) => {
+        this.setState({stockName: event.target.value});
     }
 
-    changeLastNameHandler= (event) => {
-        this.setState({lastName: event.target.value});
+    changeQuantityHandler= (event) => {
+        this.setState({quantity: event.target.value});
     }
 
     changeEmailHandler= (event) => {
@@ -63,14 +63,14 @@ class CreateUserComponent extends Component {
     }
 
     cancel(){
-        this.props.history.push('/users');
+        this.props.history.push('/stocks');
     }
 
     getTitle(){
         if(this.state.id === '_add'){
-            return <h3 className="text-center">Add User</h3>
+            return <h3 className="text-center">Add Stock</h3>
         }else{
-            return <h3 className="text-center">Update User</h3>
+            return <h3 className="text-center">Update Stock</h3>
         }
     }
     render() {
@@ -86,14 +86,14 @@ class CreateUserComponent extends Component {
                                 <div className = "card-body">
                                     <form>
                                         <div className = "form-group">
-                                            <label> First Name: </label>
-                                            <input placeholder="First Name" name="firstName" className="form-control" 
-                                                value={this.state.firstName} onChange={this.changeFirstNameHandler}/>
+                                            <label> Stock Name: </label>
+                                            <input placeholder="Stock Name" name="stockName" className="form-control" 
+                                                value={this.state.stockName} onChange={this.changeStockNameHandler}/>
                                         </div>
                                         <div className = "form-group">
-                                            <label> Last Name: </label>
-                                            <input placeholder="Last Name" name="lastName" className="form-control" 
-                                                value={this.state.lastName} onChange={this.changeLastNameHandler}/>
+                                            <label> Quantity: </label>
+                                            <input placeholder="Quantity" name="quantity" className="form-control" 
+                                                value={this.state.quantity} onChange={this.changeQuantityHandler}/>
                                         </div>
                                         <div className = "form-group">
                                             <label> Email Id: </label>
@@ -101,7 +101,7 @@ class CreateUserComponent extends Component {
                                                 value={this.state.emailId} onChange={this.changeEmailHandler}/>
                                         </div>
 
-                                        <button className="btn btn-success" onClick={this.saveOrUpdateUser}>Save</button>
+                                        <button className="btn btn-success" onClick={this.saveOrUpdateStock}>Save</button>
                                         <button className="btn btn-danger" onClick={this.cancel.bind(this)} style={{marginLeft: "10px"}}>Cancel</button>
                                     </form>
                                 </div>
@@ -114,4 +114,4 @@ class CreateUserComponent extends Component {
     }
 }
 
-export default CreateUserComponent
+export default CreateStockComponent

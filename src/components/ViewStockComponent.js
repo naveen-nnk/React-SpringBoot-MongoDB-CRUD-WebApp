@@ -1,24 +1,24 @@
 import React, { Component } from 'react'
-import UserService from '../services/UserService'
+import StockService from '../services/StockService'
 
-class ViewUserComponent extends Component {
+class ViewStockComponent extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
             id: this.props.match.params.id,
-            user: {}
+            stock: {}
         }
     }
 
     componentDidMount(){
-        UserService.getUserById(this.state.id).then( res => {
-            this.setState({user: res.data});
+        StockService.getStockById(this.state.id).then( res => {
+            this.setState({stock: res.data});
         })
     }
 
     cancel(){
-        this.props.history.push('/users');
+        this.props.history.push('/stocks');
     }
 
     render() {
@@ -26,19 +26,19 @@ class ViewUserComponent extends Component {
             <div>
                 <br></br>
                 <div className = "card col-md-6 offset-md-3">
-                    <h3 className = "text-center"> View User Details</h3>
+                    <h3 className = "text-center"> View Stock Details</h3>
                     <div className = "card-body">
                         <div className = "row">
-                            <label> User First Name: </label>
-                            <div> { this.state.user.firstName }</div>
+                            <label> Stock Name: </label>
+                            <div> { this.state.stock.stockName }</div>
                         </div>
                         <div className = "row">
-                            <label> User Last Name: </label>
-                            <div> { this.state.user.lastName }</div>
+                            <label> Quantity: </label>
+                            <div> { this.state.stock.quantity }</div>
                         </div>
                         <div className = "row">
-                            <label> User Email ID: </label>
-                            <div> { this.state.user.emailId }</div>
+                            <label> Stock Email ID: </label>
+                            <div> { this.state.stock.emailId }</div>
                         </div>
                     </div>
                     <button className="btn btn-danger" onClick={this.cancel.bind(this)} style={{marginLeft: "10px"}}>Back</button>
@@ -48,4 +48,4 @@ class ViewUserComponent extends Component {
     }
 }
 
-export default ViewUserComponent
+export default ViewStockComponent
